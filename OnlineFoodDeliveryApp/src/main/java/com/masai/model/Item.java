@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 
@@ -34,8 +35,8 @@ public class Item {
 	private Integer quantity;
 	private double cost;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	private Set<Restaurant> restaurants = new HashSet<>();
+	@ManyToOne(cascade = CascadeType.ALL)
+	Restaurant restaurant;
 	
 	@Override
 	public String toString() {
