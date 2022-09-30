@@ -1,6 +1,7 @@
 package com.masai.model;
 
 import java.util.HashSet;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -13,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 @Data
@@ -29,7 +31,7 @@ public class Restaurant {
 	private Set<Address> address = new HashSet<>();
 	
 	
-	@ManyToMany(cascade = CascadeType.ALL,mappedBy = "restaurants")
+	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Item> items = new HashSet<>();
 	
 	

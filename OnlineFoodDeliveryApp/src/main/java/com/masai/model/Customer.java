@@ -28,6 +28,10 @@ public class Customer {
 	private String lastName;
 	private Integer age;
 	private String gender;
+	private String mobileNumber;
+	private String password;
+	
+	
 	
 	@Embedded
 	@ElementCollection
