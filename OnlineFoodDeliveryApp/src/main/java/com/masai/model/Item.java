@@ -16,26 +16,36 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Data;
 
 
 
+@Data
 @Entity
 public class Item {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String itemId;
+	private Integer itemId;
 	private String itemName;
 	
 	@OneToOne
 	@JoinColumn(name = "category_id", referencedColumnName = "catId")
+	@JsonIgnore
 	private Category category;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
+	private FoodCart cart;
 	
 
 	private Integer quantity;
 	private double cost;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
 	Restaurant restaurant;
 	
 	@Override

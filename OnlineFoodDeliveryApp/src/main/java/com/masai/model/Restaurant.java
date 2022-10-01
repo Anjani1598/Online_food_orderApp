@@ -16,13 +16,15 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 @Data
 @Entity
 public class Restaurant {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String restaurantId;
+	private Integer restaurantId;
 	private String restaurantName;
 	
 	
@@ -32,6 +34,7 @@ public class Restaurant {
 	
 	
 	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<Item> items = new HashSet<>();
 	
 	
