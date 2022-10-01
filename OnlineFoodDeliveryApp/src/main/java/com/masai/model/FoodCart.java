@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 @Data
 @Entity
@@ -23,14 +25,17 @@ public class FoodCart {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String cartId;
+	@JsonIgnore
+	private Integer cartId;
 	
 	@OneToOne
+	@JsonIgnore
 	private Customer customer;
 	
 //	@OneToOne
 //	@JoinColumn(name = "orderDetails_id", referencedColumnName = "orderId")
 	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<OrderDetails> order = new ArrayList<>();
 	
 	@OneToMany(cascade = CascadeType.ALL)

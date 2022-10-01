@@ -56,7 +56,7 @@ public class ICustomerServiceImpl implements ICustomerService {
 		if(customer.getCustomerId()==loggedInUser.getUserId()) {
 			return customerDao.save(customer);
 		}else {
-			throw new CustomerException("Invalid CustomerId");
+			throw new CustomerException("Invalid Customer Details");
 		}
 	}
 

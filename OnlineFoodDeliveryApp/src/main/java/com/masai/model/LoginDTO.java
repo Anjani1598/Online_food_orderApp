@@ -8,5 +8,7 @@ public class LoginDTO {
 	private String mobileNumber;
 	private String password;
 	
+	private String role;
+	
 
 }
