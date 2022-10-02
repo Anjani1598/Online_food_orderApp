@@ -71,7 +71,7 @@ public class Restaurant {
 		if (getClass() != obj.getClass())
 			return false;
 		Restaurant other = (Restaurant) obj;
-		return Objects.equals(address, other.address) && Objects.equals(contactNumber, other.contactNumber)
+		return Objects.equals(address, other.address) && Objects.equals(mobileNumber, other.mobileNumber)
 				&& Objects.equals(managerName, other.managerName) && Objects.equals(restaurantId, other.restaurantId)
 				&& Objects.equals(restaurantName, other.restaurantName);
 	}
@@ -79,7 +79,7 @@ public class Restaurant {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(address, contactNumber, managerName, restaurantId, restaurantName);
+		return Objects.hash(address, mobileNumber, managerName, restaurantId, restaurantName);
 	}
 	
 	

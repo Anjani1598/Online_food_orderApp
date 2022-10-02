@@ -40,7 +40,7 @@ public class OrderDetails {
 	
 	@Override
 	public String toString() {
-		return "OrderDetails [orderId=" + orderId + ", orderDate=" + orderDate + ", cart=" + cart + ", orderStatus="
+		return "OrderDetails [orderId=" + orderId + ", orderDate=" + orderDate + " orderStatus="
 				+ orderStatus + "]";
 	}
 	

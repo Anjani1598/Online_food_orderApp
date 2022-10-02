@@ -186,7 +186,7 @@ public class ICartServiceImpl implements ICartService {
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		
 		if(loggedInUser==null) {
-			throw new CustomerException("Please provide valid key");
+			throw new ItemException("Please provide valid key");
 		}
 		
 		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
