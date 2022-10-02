@@ -1,5 +1,7 @@
 package com.masai.model;
 
+import java.util.ArrayList;
+
 import java.util.HashSet;
 
 import java.util.List;
@@ -38,14 +40,26 @@ public class Restaurant {
 	private Set<Item> items = new HashSet<>();
 	
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<OrderDetails> orders = new ArrayList<>(); 
+	
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Set<Category> categories = new HashSet<>();
+	
+	
+	
 	private String managerName;
-	private String contactNumber;
+	private String mobileNumber;
+	private String password;
 	
 	
 	@Override
 	public String toString() {
 		return "Restaurant [restaurantId=" + restaurantId + ", restaurantName=" + restaurantName + ", managerName="
-				+ managerName + ", contactNumber=" + contactNumber + "]";
+				+ managerName + ", contactNumber=" + mobileNumber + "]";
 	}
 	
 	@Override

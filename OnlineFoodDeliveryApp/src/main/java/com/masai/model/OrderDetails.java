@@ -2,6 +2,7 @@ package com.masai.model;
 
 import java.time.LocalDateTime;
 
+
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -28,7 +29,7 @@ public class OrderDetails {
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JsonIgnore
-	private FoodCart cart;
+	private Restaurant restaurant;
 	
 	@OneToOne
 	@JsonIgnore

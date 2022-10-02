@@ -2,13 +2,12 @@ package com.masai.model;
 
 import java.time.LocalDateTime;
 
-
-import javax.persistence.Embedded;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,8 +27,11 @@ public class Bill {
 	private Double totalCost;
 	
 	@OneToOne
-	@JoinColumn(name = "orderDetails_id", referencedColumnName = "orderId")
 	@JsonIgnore
 	private OrderDetails order;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
+	private FoodCart cart;
 
 }

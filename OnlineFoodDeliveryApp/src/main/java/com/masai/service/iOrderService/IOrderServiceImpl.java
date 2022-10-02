@@ -45,6 +45,7 @@ public class IOrderServiceImpl implements IOrderService {
 		
 		
 			OrderDetails order = new OrderDetails();
+			
 			order.setOrderDate(LocalDateTime.now());
 			order.setCart(opt.get().getCart());
 			order.setOrderStatus("Pending");
@@ -52,7 +53,7 @@ public class IOrderServiceImpl implements IOrderService {
 			
 			order.setBill(iBillService.addBill(key));
 		
-			if(opt.get().getCart().getOrder().contains(order)==false) {
+		x	if(opt.get().getCart().getOrder().contains(order)==false) {
 				return orderDao.save(order);
 			}else {
 				throw new CustomerException("orderr exists");

@@ -12,6 +12,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -34,12 +36,17 @@ public class FoodCart {
 	
 //	@OneToOne
 //	@JoinColumn(name = "orderDetails_id", referencedColumnName = "orderId")
-	@OneToMany(cascade = CascadeType.ALL)
+//	@OneToMany(cascade = CascadeType.ALL)
+//	@JsonIgnore
+//	private List<OrderDetails> order = new ArrayList<>();
+	
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
-	private List<OrderDetails> order = new ArrayList<>();
+	private Set<Item> itemList = new HashSet<>();
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	private Set<Item> itemList = new HashSet<>();
+	@JsonIgnore
+	private Set<Bill> bills = new HashSet<>();
 
 	@Override
 	public String toString() {
