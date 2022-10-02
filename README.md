@@ -23,3 +23,8 @@ This repository contains the backend of a food delivery app. An online food deli
 ## Restaurant owner user flow
 - Owner logs in (In the future we will use spring security, but for now we are using our own custom login functionality)
 - Owner accesses the restaurant owner page and can perform crud operations on the dishes being sold
+
+## Tech stack
+-Java
+-Maven
+-Spring Boot
