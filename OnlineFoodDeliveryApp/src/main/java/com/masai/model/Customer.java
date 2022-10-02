@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 
@@ -28,6 +30,10 @@ public class Customer {
 	private String lastName;
 	private Integer age;
 	private String gender;
+	private String mobileNumber;
+	private String password;
+	
+	
 	
 	@Embedded
 	@ElementCollection
@@ -35,7 +41,7 @@ public class Customer {
 	private String email;
 	
 	@OneToOne
-	@JoinColumn(name = "cart_id", referencedColumnName = "cartId")
+	@JsonIgnore
 	private FoodCart cart;
 	
 	

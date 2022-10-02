@@ -1,6 +1,9 @@
 package com.masai.model;
 
+import java.util.ArrayList;
+
 import java.util.HashSet;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -13,6 +16,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 @Data
@@ -20,7 +26,7 @@ import lombok.Data;
 public class Restaurant {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String restaurantId;
+	private Integer restaurantId;
 	private String restaurantName;
 	
 	
@@ -29,18 +35,31 @@ public class Restaurant {
 	private Set<Address> address = new HashSet<>();
 	
 	
-	@ManyToMany(cascade = CascadeType.ALL,mappedBy = "restaurants")
+	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Set<Item> items = new HashSet<>();
 	
 	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<OrderDetails> orders = new ArrayList<>(); 
+	
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Set<Category> categories = new HashSet<>();
+	
+	
+	
 	private String managerName;
-	private String contactNumber;
+	private String mobileNumber;
+	private String password;
 	
 	
 	@Override
 	public String toString() {
 		return "Restaurant [restaurantId=" + restaurantId + ", restaurantName=" + restaurantName + ", managerName="
-				+ managerName + ", contactNumber=" + contactNumber + "]";
+				+ managerName + ", contactNumber=" + mobileNumber + "]";
 	}
 	
 	@Override

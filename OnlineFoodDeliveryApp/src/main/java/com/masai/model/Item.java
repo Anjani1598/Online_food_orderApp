@@ -13,29 +13,38 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Data;
 
 
 
+@Data
 @Entity
 public class Item {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String itemId;
+	private Integer itemId;
 	private String itemName;
 	
-	@OneToOne
-	@JoinColumn(name = "category_id", referencedColumnName = "catId")
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Category category;
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Set<FoodCart> carts = new HashSet<>();
 	
 
 	private Integer quantity;
 	private double cost;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	private Set<Restaurant> restaurants = new HashSet<>();
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
+	Restaurant restaurant;
 	
 	@Override
 	public String toString() {
