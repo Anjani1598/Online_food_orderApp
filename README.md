@@ -3,8 +3,11 @@ This repository contains a functional clone of a food delivery app. Online food 
 
 ## Team
 [Anjani vara prasad](https://github.com/Anjani1598)
+
 [Vaibhav shahi](https://github.com/vaibhavshahi10)
+
 [Kousik Manik](https://github.com/Kousik1234)
+
 [Rishon A Singh](https://github.com/Rishon-A-Singh)
 
 
