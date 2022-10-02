@@ -1,5 +1,5 @@
 # Food delivery app backend
-This repository contains a functional clone of a food delivery app. Online food delivery apps are a major business model. An online food delivery app aims to provide food to customers in a safe, fast and efficient manner. To do this, it involves onboarding restaurants, delivery agents and customers. 2 of the most famous examples are Zomato and Swiggy. In this, we have divided the use for 2 separate users, the customer ordering the food, and the restaurant owner setting up and updating a restaurant.
+This repository contains the backend of a food delivery app. Online food delivery apps are a successful business model. An online food delivery app aims to deliver food from restaurants to customers at a location of their choice in a safe, fast and efficient manner. This combines convenience of the customer with a manifold increase in the reach of a restaurant. To do this, it involves onboarding restaurants, delivery agents and customers. Two of the most famous examples are Zomato and Swiggy. In this model, we have divided the use for two separate users, the customer ordering the food, and the restaurant owner setting up and updating a restaurant menu.
 
 ## Team
 [Anjani vara prasad](https://github.com/Anjani1598)
