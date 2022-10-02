@@ -1,6 +1,9 @@
 package com.masai.service.iCategoryService;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.masai.exceptions.CustomerException;
 import com.masai.exceptions.RestaurantException;
@@ -11,6 +14,7 @@ import com.masai.repositories.CategoryDao;
 import com.masai.repositories.RestaurantDao;
 import com.masai.repositories.SessionDao;
 
+@Service
 public class ICategoryServiceImpl implements ICategoryService {
 
 	@Autowired
@@ -33,6 +37,19 @@ public class ICategoryServiceImpl implements ICategoryService {
 			throw new RestaurantException("Please provide valid key");
 			
 		}
+		
+		Optional<Restaurant> opt = restaurantDao.findById(loggedInUser.getUserId());
+		
+		if(opt.isPresent()) {
+			
+			opt.get().getCategories().add(cat);
+			cat.getRestaurants().add(opt.get());
+			
+			return categoryDao.save(cat);
+			
+		}
+		
+		throw new RestaurantException("Invalid Restaurant Details");
 	}
 
 	@Override

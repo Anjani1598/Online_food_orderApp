@@ -12,6 +12,7 @@ import com.masai.model.Category;
 import com.masai.model.CurrentUserSession;
 import com.masai.model.Item;
 import com.masai.model.Restaurant;
+import com.masai.repositories.CategoryDao;
 import com.masai.repositories.ItemDao;
 import com.masai.repositories.RestaurantDao;
 import com.masai.repositories.SessionDao;
@@ -44,7 +45,14 @@ public class IItemServiceImpl implements IItemService {
 			
 			Restaurant res = opt.get();
 			
-			res.getItems().add(item);
+			for(Category cat : res.getCategories()) {
+				if(cat.getCategoryName() == item.getCategory().getCategoryName()) {
+					cat.getItems().add(item);
+					item.setCategory(cat);
+					itemDao.save(item);
+					break;
+				}
+			}
 			item.setRestaurant(res);
 			
 			
