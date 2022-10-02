@@ -31,14 +31,12 @@ public class Item {
 	private Integer itemId;
 	private String itemName;
 	
-	@OneToOne
-	@JoinColumn(name = "category_id", referencedColumnName = "catId")
-	@JsonIgnore
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Category category;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
-	private FoodCart cart;
+	private Set<FoodCart> carts = new HashSet<>();
 	
 
 	private Integer quantity;

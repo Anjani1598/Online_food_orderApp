@@ -27,6 +27,8 @@ public class ICartServiceImpl implements ICartService {
 	
 	@Autowired
 	private SessionDao sessionDao;
+	
+	
 
 	@Override
 	public FoodCart addItemToCart(Item item,String key) throws FoodCartException, ItemException, CustomerException {
@@ -50,8 +52,7 @@ public class ICartServiceImpl implements ICartService {
 			
 			
 			cart.getItemList().add(item);
-			item.setCart(cart);
-			
+			item.getCarts().add(cart);			
 		
 			
 			
@@ -61,7 +62,7 @@ public class ICartServiceImpl implements ICartService {
 			
 			FoodCart cart = opt.get().getCart();
 			cart.getItemList().add(item);
-			item.setCart(cart);
+			item.getCarts().add(cart);
 			return foodCartDao.save(cart);
 		}
 
@@ -69,28 +70,180 @@ public class ICartServiceImpl implements ICartService {
 	}
 
 	@Override
-	public FoodCart increaseQuantity(FoodCart cart, Item item, Integer quantity)
-			throws FoodCartException, ItemException {
-		// TODO Auto-generated method stub
-		return null;
+	public FoodCart increaseQuantity(Item item, Integer quantity,String key)throws FoodCartException, ItemException, CustomerException {
+		
+		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
+		
+		if(loggedInUser==null) {
+			throw new CustomerException("Please provide valid key");
+		}
+		
+		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
+		
+		
+		if(opt.get().getCart() == null) {
+			
+			throw new FoodCartException("Your Cart is Empty");
+			
+		}else {
+			
+			FoodCart cart = opt.get().getCart();
+			
+			if(cart.getItemList().contains(item)) {
+				
+				for(Item cart_item : cart.getItemList()) {
+					
+					if(cart_item == item) {
+						
+						if(cart_item.getQuantity()>0) {
+							cart_item.setQuantity(cart_item.getQuantity()+1);
+							cart_item.getCarts().add(cart);
+							return foodCartDao.save(cart);
+						}else if(cart_item.getQuantity()==0) {
+							cart.getItemList().add(cart_item);
+							cart_item.getCarts().add(cart);
+							return foodCartDao.save(cart);
+						}
+						
+						
+					}
+					
+				}
+				
+			}
+			
+				throw new ItemException("No Item Found");
+			
+			
+		}
+
+		
+	}
+
+
+
+
+
+	@Override
+	public FoodCart reduceQuantity(Item item, Integer quantity,String key)throws FoodCartException, ItemException, CustomerException {
+		
+		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
+		
+		if(loggedInUser==null) {
+			throw new CustomerException("Please provide valid key");
+		}
+		
+		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
+		
+		
+		if(opt.get().getCart() == null) {
+			
+			throw new FoodCartException("Your Cart is Empty");
+			
+		}else {
+			
+			FoodCart cart = opt.get().getCart();
+			
+			if(cart.getItemList().contains(item)) {
+				
+				for(Item cart_item : cart.getItemList()) {
+					
+					if(cart_item == item) {
+						
+						if(cart_item.getQuantity()>1) {
+							
+							cart_item.setQuantity(cart_item.getQuantity()-1);
+							cart_item.getCarts().add(cart);
+							return foodCartDao.save(cart);
+							
+						}else if(cart_item.getQuantity()==1) {
+							
+							cart.getItemList().remove(cart_item);
+							cart_item.getCarts().add(cart);
+							return foodCartDao.save(cart);
+						}
+					
+					}
+
+				}
+				
+			}
+			
+				throw new ItemException("No Item Found");
+			
+			
+		}
+
+		
+	}
+
+
+
+	@Override
+	public FoodCart removeItem(Item item,String key) throws FoodCartException, ItemException {
+
+		
+		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
+		
+		if(loggedInUser==null) {
+			throw new CustomerException("Please provide valid key");
+		}
+		
+		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
+		
+		if(opt.get().getCart() == null) {
+			
+			throw new FoodCartException("Your Cart is Empty");
+			
+		}else {
+			
+			FoodCart cart = opt.get().getCart();
+			
+			if(cart.getItemList().contains(item)) {
+				
+				cart.getItemList().remove(item);
+				item.getCarts().remove(cart);
+				
+				return foodCartDao.save(cart);
+				
+			}
+			
+			throw new ItemException("Item Does Not Exist");
+			
+		}
+		
+		
 	}
 
 	@Override
-	public FoodCart reduceQuantity(FoodCart cart, Item item, Integer quantity) throws FoodCartException, ItemException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public FoodCart removeItem(FoodCart cart, Item item) throws FoodCartException, ItemException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public FoodCart clearCart(FoodCart cart) throws FoodCartException {
-		// TODO Auto-generated method stub
-		return null;
+	public FoodCart clearCart(String key) throws FoodCartException, CustomerException {
+		
+		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
+		
+		if(loggedInUser==null) {
+			throw new CustomerException("Please provide valid key");
+		}
+		
+		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
+		
+		if(opt.get().getCart() == null) {
+			
+			throw new FoodCartException("Your Cart is Empty");
+			
+		}else {
+			
+			FoodCart cart = opt.get().getCart();
+			
+			for(Item item : cart.getItemList()) {
+				item.getCarts().remove(cart);
+			}
+			
+			cart.getItemList().clear();
+			
+			return foodCartDao.save(cart);
+			
+		}
+		
 	}
 
 }

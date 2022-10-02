@@ -7,4 +7,6 @@ public interface IBillService {
 	
 	public Bill addBill(String key) throws CustomerException;
 
+	public Bill updateBill(Bill bill, String key) throws CustomerException;
+
 }
