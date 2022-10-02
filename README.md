@@ -28,3 +28,6 @@ This repository contains the backend of a food delivery app. An online food deli
 - Java
 - Spring Boot
 - Maven
+- HTML
+- CSS
+- Javascript
