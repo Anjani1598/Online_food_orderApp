@@ -2,6 +2,7 @@ package com.masai.model;
 
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -28,6 +29,8 @@ public class Category {
 	private String categoryName;
 	
 	
+	
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Item> items = new HashSet<>();
@@ -35,4 +38,21 @@ public class Category {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Restaurant> restaurants = new HashSet<>();
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Category other = (Category) obj;
+		return Objects.equals(catId, other.catId) && Objects.equals(categoryName, other.categoryName);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(categoryName);
+	}
 }
