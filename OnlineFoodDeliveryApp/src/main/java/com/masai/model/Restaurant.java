@@ -71,7 +71,11 @@ public class Restaurant {
 		if (getClass() != obj.getClass())
 			return false;
 		Restaurant other = (Restaurant) obj;
+<<<<<<< HEAD
 		return Objects.equals(address, other.address) && Objects.equals(mobileNumber, other.mobileNumber)
+=======
+		return Objects.equals(address, other.address) && Objects.equals(mobileNumber, other.contactNumber)
+>>>>>>> 2fbf0e1b7b0688dd6c5e03958796d9bad6fb965d
 				&& Objects.equals(managerName, other.managerName) && Objects.equals(restaurantId, other.restaurantId)
 				&& Objects.equals(restaurantName, other.restaurantName);
 	}

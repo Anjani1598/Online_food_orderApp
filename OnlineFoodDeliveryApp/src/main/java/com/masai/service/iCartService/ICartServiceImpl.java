@@ -47,7 +47,10 @@ public class ICartServiceImpl implements ICartService {
 			FoodCart cart = new FoodCart();
 			
 			cart.setCustomer(opt.get());
+			
 			opt.get().setCart(cart);
+			
+			foodCartDao.save(cart);
 			
 			
 			
@@ -180,7 +183,7 @@ public class ICartServiceImpl implements ICartService {
 
 
 	@Override
-	public FoodCart removeItem(Item item,String key) throws FoodCartException, ItemException {
+	public FoodCart removeItem(Item item,String key) throws FoodCartException, ItemException, CustomerException {
 
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);

@@ -32,6 +32,7 @@ public class Item {
 	private String itemName;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private Category category;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -45,15 +46,10 @@ public class Item {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JsonIgnore
 	Restaurant restaurant;
-	
+
 	@Override
 	public String toString() {
 		return "Item [itemId=" + itemId + ", itemName=" + itemName + ", quantity=" + quantity + ", cost=" + cost + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(cost, itemId, itemName, quantity);
 	}
 
 	@Override
@@ -69,6 +65,15 @@ public class Item {
 				&& Objects.equals(itemId, other.itemId) && Objects.equals(itemName, other.itemName)
 				&& Objects.equals(quantity, other.quantity);
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(cost, itemId, itemName, quantity);
+	}
+	
+	
+
+	
 	
 	
 	
