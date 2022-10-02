@@ -25,6 +25,6 @@ This repository contains the backend of a food delivery app. An online food deli
 - Owner accesses the restaurant owner page and can perform crud operations on the dishes being sold
 
 ## Tech stack
--Java
--Maven
--Spring Boot
+- Java
+- Spring Boot
+- Maven
