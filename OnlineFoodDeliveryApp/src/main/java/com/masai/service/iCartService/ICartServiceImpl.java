@@ -47,7 +47,8 @@ public class ICartServiceImpl implements ICartService {
 		
 		
 		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
-		
+		Optional<Restaurant> opt_res = restaurantDao.findById(item.getRestaurant().getRestaurantId());
+
 		if(opt.get().getCart() == null) {
 			
 			FoodCart cart = new FoodCart();
@@ -56,7 +57,6 @@ public class ICartServiceImpl implements ICartService {
 			
 			opt.get().setCart(cart);
 			
-			Optional<Restaurant> opt_res = restaurantDao.findById(item.getRestaurant().getRestaurantId());
 
 			Restaurant res = opt_res.get();
 			
@@ -67,7 +67,7 @@ public class ICartServiceImpl implements ICartService {
 				
 				if(i.getItemId()==item.getItemId()) {
 					cart.getItemList().add(i);
-					item.getCarts().add(cart);
+					i.getCarts().add(cart);
 					return foodCartDao.save(cart);
 					
 				}
@@ -75,19 +75,26 @@ public class ICartServiceImpl implements ICartService {
 			
 			throw new FoodCartException("Item does not exist");
 			
-			
-						
 		
-			
-			
-			
-			
 		}else {
 			
 			FoodCart cart = opt.get().getCart();
-			cart.getItemList().add(item);
-			item.getCarts().add(cart);
-			return foodCartDao.save(cart);
+			Restaurant res = opt_res.get();
+			
+			for(Item i : res.getItems()) {
+				
+				
+				System.out.println(i);
+				
+				if(i.getItemId()==item.getItemId()) {
+					cart.getItemList().add(i);
+					i.getCarts().add(cart);
+					return foodCartDao.save(cart);
+					
+				}
+			}
+			throw new FoodCartException("Item does not exist");
+
 		}
 
 		

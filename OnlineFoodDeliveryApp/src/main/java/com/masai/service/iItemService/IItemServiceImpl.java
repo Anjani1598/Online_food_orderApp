@@ -59,12 +59,13 @@ public class IItemServiceImpl implements IItemService {
 				
 				
 				
-				if(cat.getCategoryName().equals(item.getCategory().getCategoryName())) {
+				if(cat.getCatId() == item.getCategory().getCatId()) {
 					
 					cat.getItems().add(item);
 					cat.getRestaurants().add(res);
 					item.setCategory(cat);
 					item.setRestaurant(res);
+					res.getItems().add(item);
 					return itemDao.save(item);
 					
 				}
