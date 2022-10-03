@@ -8,12 +8,15 @@ import org.springframework.stereotype.Service;
 import com.masai.exceptions.CustomerException;
 import com.masai.exceptions.FoodCartException;
 import com.masai.exceptions.ItemException;
+import com.masai.exceptions.RestaurantException;
 import com.masai.model.CurrentUserSession;
 import com.masai.model.Customer;
 import com.masai.model.FoodCart;
 import com.masai.model.Item;
+import com.masai.model.Restaurant;
 import com.masai.repositories.CustomerDao;
 import com.masai.repositories.FoodCartDao;
+import com.masai.repositories.RestaurantDao;
 import com.masai.repositories.SessionDao;
 
 @Service
@@ -27,6 +30,9 @@ public class ICartServiceImpl implements ICartService {
 	
 	@Autowired
 	private SessionDao sessionDao;
+	
+	@Autowired
+	private RestaurantDao restaurantDao;
 	
 	
 
@@ -50,16 +56,31 @@ public class ICartServiceImpl implements ICartService {
 			
 			opt.get().setCart(cart);
 			
-			foodCartDao.save(cart);
+			Optional<Restaurant> opt_res = restaurantDao.findById(item.getRestaurant().getRestaurantId());
+
+			Restaurant res = opt_res.get();
+			
+			for(Item i : res.getItems()) {
+				
+				
+				System.out.println(i);
+				
+				if(i.getItemId()==item.getItemId()) {
+					cart.getItemList().add(i);
+					item.getCarts().add(cart);
+					return foodCartDao.save(cart);
+					
+				}
+			}
+			
+			throw new FoodCartException("Item does not exist");
 			
 			
-			
-			cart.getItemList().add(item);
-			item.getCarts().add(cart);			
+						
 		
 			
 			
-			return foodCartDao.save(cart);
+			
 			
 		}else {
 			

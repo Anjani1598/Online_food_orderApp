@@ -32,7 +32,7 @@ public class Item {
 	private String itemName;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JsonIgnore
+//	@JsonIgnore
 	private Category category;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -44,7 +44,7 @@ public class Item {
 	private double cost;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JsonIgnore
+//	@JsonIgnore
 	Restaurant restaurant;
 
 	@Override
