@@ -17,14 +17,14 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
-import lombok.ToString;
+
 @Data
-@ToString
 @Entity
 public class Category {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+//	@JsonIgnore
 	private Integer catId;
 	private String categoryName;
 	
@@ -48,11 +48,20 @@ public class Category {
 		if (getClass() != obj.getClass())
 			return false;
 		Category other = (Category) obj;
-		return Objects.equals(catId, other.catId) && Objects.equals(categoryName, other.categoryName);
+		return Objects.equals(categoryName, other.categoryName);
 	}
+	
+	
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(categoryName);
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "Category [catId=" + catId + ", categoryName=" + categoryName + "]";
 	}
 }
