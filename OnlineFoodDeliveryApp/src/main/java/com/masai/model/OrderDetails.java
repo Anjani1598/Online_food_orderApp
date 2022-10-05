@@ -31,7 +31,7 @@ public class OrderDetails {
 	@JsonIgnore
 	private Restaurant restaurant;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Bill bill;
 	

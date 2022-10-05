@@ -53,7 +53,7 @@ public class IOrderServiceImpl implements IOrderService {
 			
 			order.setBill(iBillService.addBill(key));
 		
-		x	if(opt.get().getCart().getOrder().contains(order)==false) {
+		if(opt.get().getCart().getOrder().contains(order)==false) {
 				return orderDao.save(order);
 			}else {
 				throw new CustomerException("orderr exists");

@@ -41,7 +41,7 @@ public class FoodCart {
 //	@JsonIgnore
 //	private List<OrderDetails> order = new ArrayList<>();
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JsonIgnore
 	private Set<Item> itemList = new HashSet<>();
 	

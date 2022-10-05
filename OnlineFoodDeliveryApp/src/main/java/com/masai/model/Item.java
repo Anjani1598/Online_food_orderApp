@@ -35,7 +35,7 @@ public class Item {
 //	@JsonIgnore
 	private Category category;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JsonIgnore
 	private Set<FoodCart> carts = new HashSet<>();
 	
