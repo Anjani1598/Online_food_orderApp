@@ -88,7 +88,7 @@ public class ICustomerServiceImpl implements ICustomerService {
 		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
 		
 		if(opt.isPresent()) {
-			return opt.get();          
+			return opt.get();
 		}else {
 			throw new CustomerException("Invalid Details");
 			
