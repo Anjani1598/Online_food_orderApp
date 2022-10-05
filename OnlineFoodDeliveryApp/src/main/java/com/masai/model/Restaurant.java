@@ -49,6 +49,7 @@ public class Restaurant {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Category> categories = new HashSet<>();
+	
 
 	
 	

@@ -63,16 +63,26 @@ public class IRestaurantServiceImpl implements IRestaurantService{
 	}
 
 	@Override
-	public Restaurant removeRestaurant(Restaurant res, String key) throws RestaurantException {
+	public Restaurant removeRestaurant(Integer id, String key) throws RestaurantException {
 		
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
-		if(res.getRestaurantId()==loggedInUser.getUserId()) {
-			restaurantDao.delete(res);
-			return res;
+		
+		Optional<Restaurant> opt = restaurantDao.findById(id);
+		
+		if(opt.isPresent()) {
+			Restaurant res = opt.get();
+			if(res.getRestaurantId()==loggedInUser.getUserId()) {
+				restaurantDao.delete(res);
+				return res;
+			}else {
+				throw new RestaurantException("Invalid Restaurant Details");
+			}
+			
 		}else {
-			throw new RestaurantException("Invalid Restaurant Details");
+			throw new RestaurantException("No Restaurant Found");
 		}
+		
 	}
 
 	@Override

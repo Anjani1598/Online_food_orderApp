@@ -15,7 +15,7 @@ public interface IRestaurantService {
 	public Restaurant updateRestaurant(Restaurant res, String key) throws RestaurantException;
 
 	
-	public Restaurant removeRestaurant(Restaurant res, String key) throws RestaurantException;
+	public Restaurant removeRestaurant(Integer id, String key) throws RestaurantException;
 
 	
 	public Restaurant viewRestaurant(Restaurant res, String key) throws RestaurantException;
