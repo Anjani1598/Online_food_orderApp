@@ -26,7 +26,7 @@ public class Bill {
 	private Integer totalItem;
 	private Double totalCost;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JsonIgnore
 	private OrderDetails order;
 	

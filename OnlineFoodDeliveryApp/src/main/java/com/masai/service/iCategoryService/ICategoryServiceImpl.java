@@ -42,6 +42,13 @@ public class ICategoryServiceImpl implements ICategoryService {
 		
 		if(opt.isPresent()) {
 			
+			for(Category category : opt.get().getCategories()) {
+				if(category.getCategoryName().equals(cat.getCategoryName())) {
+					throw new RestaurantException("Category added already");
+					
+				}
+			}
+			
 			opt.get().getCategories().add(cat);
 			cat.getRestaurants().add(opt.get());
 			

@@ -3,6 +3,7 @@ package com.masai.model;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -40,7 +41,7 @@ public class FoodCart {
 //	@JsonIgnore
 //	private List<OrderDetails> order = new ArrayList<>();
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.PERSIST)
 	@JsonIgnore
 	private Set<Item> itemList = new HashSet<>();
 	
@@ -53,4 +54,22 @@ public class FoodCart {
 		return "FoodCart [cartId=" + cartId + ", customer=" + customer + "]";
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FoodCart other = (FoodCart) obj;
+		return Objects.equals(cartId, other.cartId);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(cartId);
+	}
+
+	
 }

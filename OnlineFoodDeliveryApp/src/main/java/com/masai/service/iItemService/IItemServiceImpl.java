@@ -46,17 +46,31 @@ public class IItemServiceImpl implements IItemService {
 			Restaurant res = opt.get();
 			
 			for(Category cat : res.getCategories()) {
-				if(cat.getCategoryName() == item.getCategory().getCategoryName()) {
+				
+				
+					
+//				for(Item items : cat.getItems()) {
+//					if(items.getItemName().equals(item.getItemName())) {
+//						throw new RestaurantException("Item already Exists");
+//					}
+//				}
+					
+				
+				
+				
+				
+				if(cat.getCatId() == item.getCategory().getCatId()) {
+					
 					cat.getItems().add(item);
+					cat.getRestaurants().add(res);
 					item.setCategory(cat);
-					itemDao.save(item);
-					break;
+					item.setRestaurant(res);
+					res.getItems().add(item);
+					return itemDao.save(item);
+					
 				}
 			}
-			item.setRestaurant(res);
-			
-			
-			return itemDao.save(item);
+			throw new RestaurantException("Category not found");
 
 
 		
@@ -65,12 +79,7 @@ public class IItemServiceImpl implements IItemService {
 			throw new RestaurantException("please login first and add restaurant details");
 
 			
-			
-			
 		}
-		
-
-
 	}
 
 	@Override
