@@ -17,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -48,6 +49,7 @@ public class Restaurant {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Category> categories = new HashSet<>();
+
 	
 	
 	

@@ -211,14 +211,14 @@ public class ICartServiceImpl implements ICartService {
 
 
 	@Override
-	public FoodCart removeItem(Item item,String key) throws FoodCartException, ItemException, CustomerException {
+	public FoodCart removeItem(Item item,String key) throws FoodCartException, ItemException {
 
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		
-		if(loggedInUser==null) {
-			throw new CustomerException("Please provide valid key");
-		}
+//		if(loggedInUser==null) {
+//			throw new CustomerException("Please provide valid key");
+//		}
 		
 		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
 		

@@ -49,17 +49,25 @@ public class IBillServiceImpl implements IBillService {
 		bill.setBillDate(LocalDateTime.now());
 
 		bill.setTotalItem(opt.get().getCart().getItemList().size());
-		
+		Restaurant res = null;
 		Double totalCost = (double) 0;
 		for(Item items : opt.get().getCart().getItemList()) {
+			res = items.getRestaurant();
 			totalCost += items.getCost()*items.getQuantity();
 		}
 		bill.setTotalCost(totalCost);
 		bill.setCart(opt.get().getCart());
 		OrderDetails order = new OrderDetails();
-		order.setBill(bill);
+		
 		order.setOrderDate(LocalDateTime.now());
 		order.setOrderStatus("placed");
+		order.setRestaurant(res);
+		
+
+		order.setBill(bill);
+		bill.setOrder(order);
+		res.getOrders().add(order);
+		restaurantDao.save(res);
 		
 		return billDao.save(bill);
 	
