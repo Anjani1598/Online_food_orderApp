@@ -3,8 +3,12 @@ package com.masai.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.masai.exceptions.CustomerException;
@@ -21,9 +25,33 @@ public class RestaurantController {
 	@PostMapping("/restaurant")
 	public ResponseEntity<Restaurant> addRestaurantHandler(@RequestBody Restaurant res) throws RestaurantException, CustomerException{
 		
-		Restaurant addedAdmin = iRestaurantService.addRestaurant(res);
+		Restaurant addedRestaurant = iRestaurantService.addRestaurant(res);
 		
-		return new ResponseEntity<Restaurant>(addedAdmin,HttpStatus.CREATED);
+		return new ResponseEntity<Restaurant>(addedRestaurant,HttpStatus.CREATED);
+	}
+	
+	@PutMapping("/restaurant")
+	public ResponseEntity<Restaurant> updateRestaurantHandler(@RequestBody Restaurant res, @RequestParam(required = false) String key) throws RestaurantException, CustomerException{
+		
+		Restaurant updatedRestaurant = iRestaurantService.updateRestaurant(res, key);
+		
+		return new ResponseEntity<Restaurant>(updatedRestaurant,HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("/restaurant")
+	public ResponseEntity<String> deleteRestaurantHandler(@RequestParam Integer id, @RequestParam(required = false) String key) throws RestaurantException, CustomerException{
+		
+		String deletedRestaurant = iRestaurantService.removeRestaurant(id, key);
+		
+		return new ResponseEntity<String>(deletedRestaurant,HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/restaurant")
+	public ResponseEntity<Restaurant> viewRestaurantHandler(@RequestParam(required = false) String key) throws RestaurantException, CustomerException{
+		
+		Restaurant viewedRestaurant = iRestaurantService.viewRestaurant(key);
+		
+		return new ResponseEntity<Restaurant>(viewedRestaurant,HttpStatus.CREATED);
 	}
 	
 	

@@ -3,6 +3,7 @@ package com.masai.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -43,6 +44,8 @@ public class Customer {
 	@OneToOne
 	@JsonIgnore
 	private FoodCart cart;
+	
+
 
 	
 	

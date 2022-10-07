@@ -28,9 +28,12 @@ public class IItemServiceImpl implements IItemService {
 	
 	@Autowired
 	private SessionDao sessionDao;
+	
+	@Autowired
+	private CategoryDao categoryDao;
 
 	@Override
-	public Item addItem(Item item , String key) throws RestaurantException {
+	public Item addItem(Integer catId,String itemName,Double cost, String key) throws RestaurantException {
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		
@@ -59,13 +62,18 @@ public class IItemServiceImpl implements IItemService {
 				
 				
 				
-				if(cat.getCatId() == item.getCategory().getCatId()) {
+				if(cat.getCatId() == catId) {
 					
-					cat.getItems().add(item);
-					cat.getRestaurants().add(res);
+					Item item =  new Item();
+					item.setItemName(itemName);
 					item.setCategory(cat);
+					item.setCost(cost);
 					item.setRestaurant(res);
+					item.setCategory(cat);
 					res.getItems().add(item);
+					cat.getItems().add(item);
+					
+					
 					return itemDao.save(item);
 					
 				}
@@ -83,7 +91,7 @@ public class IItemServiceImpl implements IItemService {
 	}
 
 	@Override
-	public Item updateItem(Item item, String key) throws RestaurantException {
+	public Item updateItem(Integer itemId, String itemName,Double cost,Integer catId, String key) throws RestaurantException {
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		
@@ -93,6 +101,7 @@ public class IItemServiceImpl implements IItemService {
 		}
 		
 		Optional<Restaurant> opt = restaurantDao.findById(loggedInUser.getUserId());
+		Item item = itemDao.findById(itemId).get();
 		
 		if(opt.isPresent()) {
 			
@@ -101,22 +110,14 @@ public class IItemServiceImpl implements IItemService {
 			
 			if(res.getItems().contains(item)) {
 				
-				for(Item res_item : res.getItems()) {
-					if(res_item.getItemId() == item.getItemId()) {
-						
-						res.getItems().remove(res_item);
-//						res_item.setCategory(item.getCategory());
-//						res_item.setCost(item.getCost());
-//						res_item.setItemName(item.getItemName());
-						res.getItems().add(item);
-						
-						res_item.setRestaurant(res);
-						
-						return itemDao.save(item);
+				item.setItemName(itemName);
+				item.setCategory(categoryDao.findById(catId).get());
+				item.setCost(cost);
+				item.setQuantity(1);
+				
+				return itemDao.save(item);
+				
 	
-						
-					}
-				}
 			}else {
 				throw new RestaurantException("No items found");
 			}
@@ -130,7 +131,7 @@ public class IItemServiceImpl implements IItemService {
 	}
 
 	@Override
-	public Item viewItem(Item item, String key) throws RestaurantException {
+	public Item viewItem(Integer itemid, String key) throws RestaurantException {
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		
@@ -145,8 +146,8 @@ public class IItemServiceImpl implements IItemService {
 			
 			Restaurant res = opt.get();
 			
-			if(res.getItems().contains(item)) {
-				return item;
+			if(res.getItems().contains(itemDao.findById(itemid).get())) {
+				return itemDao.findById(itemid).get();
 			}else {
 				throw new RestaurantException("Item not Found");
 			}
@@ -161,7 +162,7 @@ public class IItemServiceImpl implements IItemService {
 	}
 
 	@Override
-	public Item removeItem(Item item, String key) throws RestaurantException {
+	public String removeItem(Integer itemId, String key) throws RestaurantException {
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		
@@ -171,7 +172,7 @@ public class IItemServiceImpl implements IItemService {
 		}
 		
 		Optional<Restaurant> opt = restaurantDao.findById(loggedInUser.getUserId());
-		
+		Item item = itemDao.findById(itemId).get();
 		if(opt.isPresent()) {
 			
 			Restaurant res = opt.get();
@@ -179,9 +180,10 @@ public class IItemServiceImpl implements IItemService {
 			if(res.getItems().contains(item)) {
 				
 				res.getItems().remove(item);
-				
-				item.setRestaurant(null);
-				return item;
+				Category cat = item.getCategory();
+				cat.getItems().remove(item);
+				itemDao.delete(item);
+				return "Item removed Successfully";
 			}else {
 				throw new RestaurantException("Item not Found");
 			}

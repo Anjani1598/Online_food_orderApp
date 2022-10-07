@@ -8,13 +8,13 @@ import com.masai.exceptions.ItemException;
 
 public interface ICartService {
 	
-	public FoodCart addItemToCart(Item item, String key)throws FoodCartException, ItemException, CustomerException;
+	public FoodCart addItemToCart(Integer itemId,String key)throws FoodCartException, ItemException, CustomerException;
 	
-	public FoodCart increaseQuantity(Item item, Integer quantity,String key) throws FoodCartException,ItemException,CustomerException;
+	public FoodCart increaseQuantity(Integer itemId,String key) throws FoodCartException,ItemException,CustomerException;
 	
-	public FoodCart reduceQuantity(Item item, Integer quantity,String key)throws FoodCartException,ItemException, CustomerException;
+	public FoodCart reduceQuantity(Integer itemId, Integer quantity,String key)throws FoodCartException,ItemException, CustomerException;
 
-	public FoodCart removeItem(Item item, String key)throws FoodCartException,ItemException;
+	public FoodCart removeItem(Integer itemId, String key)throws FoodCartException,ItemException;
 	
 	public FoodCart clearCart(String key)throws FoodCartException,CustomerException;
 

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +39,28 @@ public class CustomerController {
 		return new ResponseEntity<Customer>(updatedCustomer,HttpStatus.OK);
 		
 	}
+	
+	@DeleteMapping("/customers")
+	public  ResponseEntity<String> removeCustomer(@RequestParam Integer customerId,@RequestParam(required = false) String key ) throws CustomerException {
+		
+		
+		String deletedCustomer= customerService.removeCustomer(customerId, key);
+				
+		return new ResponseEntity<String>(deletedCustomer,HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/customers")
+	public  ResponseEntity<Customer> viewCustomer(@RequestParam(required = false) String key ) throws CustomerException {
+		
+		
+		Customer Customer= customerService.viewCustomer(key);
+				
+		return new ResponseEntity<Customer>(Customer,HttpStatus.OK);
+		
+	}
+	
+	
 	
 	
 	

@@ -16,9 +16,9 @@ public interface ICustomerService {
 	
 	public Customer updateCustomer(Customer customer, String key)throws CustomerException;
 	
-	public Customer removeCustomer(Customer customer, String key)throws CustomerException;
+	public String removeCustomer(Integer customerId, String key)throws CustomerException;
 	
-	public Customer viewCustomer(Customer customer, String key)throws CustomerException;
+	public Customer viewCustomer(String key)throws CustomerException;
 	
 	public List<Customer> viewAllCustomers(Restaurant rest) throws RestaurantException;
 
