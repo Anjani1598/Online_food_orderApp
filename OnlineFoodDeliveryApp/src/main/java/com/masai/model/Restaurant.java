@@ -46,7 +46,7 @@ public class Restaurant {
 	private List<OrderDetails> orders = new ArrayList<>(); 
 	
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JsonIgnore
 	private Set<Category> categories = new HashSet<>();
 	

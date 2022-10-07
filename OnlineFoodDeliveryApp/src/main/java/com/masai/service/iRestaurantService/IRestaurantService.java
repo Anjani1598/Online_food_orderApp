@@ -15,10 +15,10 @@ public interface IRestaurantService {
 	public Restaurant updateRestaurant(Restaurant res, String key) throws RestaurantException;
 
 	
-	public Restaurant removeRestaurant(Integer id, String key) throws RestaurantException;
+	public String removeRestaurant(Integer id, String key) throws RestaurantException;
 
 	
-	public Restaurant viewRestaurant(Restaurant res, String key) throws RestaurantException;
+	public Restaurant viewRestaurant(String key) throws RestaurantException;
 	
 	
 	public List<Restaurant> viewNearByRestaurant(String location) throws RestaurantException;

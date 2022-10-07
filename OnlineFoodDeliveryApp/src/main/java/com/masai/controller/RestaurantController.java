@@ -39,17 +39,17 @@ public class RestaurantController {
 	}
 	
 	@DeleteMapping("/restaurant")
-	public ResponseEntity<Restaurant> deleteRestaurantHandler(@RequestParam Integer id, @RequestParam(required = false) String key) throws RestaurantException, CustomerException{
+	public ResponseEntity<String> deleteRestaurantHandler(@RequestParam Integer id, @RequestParam(required = false) String key) throws RestaurantException, CustomerException{
 		
-		Restaurant deletedRestaurant = iRestaurantService.removeRestaurant(id, key);
+		String deletedRestaurant = iRestaurantService.removeRestaurant(id, key);
 		
-		return new ResponseEntity<Restaurant>(deletedRestaurant,HttpStatus.CREATED);
+		return new ResponseEntity<String>(deletedRestaurant,HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/restaurant")
-	public ResponseEntity<Restaurant> viewRestaurantHandler(@RequestBody Restaurant res, @RequestParam(required = false) String key) throws RestaurantException, CustomerException{
+	public ResponseEntity<Restaurant> viewRestaurantHandler(@RequestParam(required = false) String key) throws RestaurantException, CustomerException{
 		
-		Restaurant viewedRestaurant = iRestaurantService.viewRestaurant(res, key);
+		Restaurant viewedRestaurant = iRestaurantService.viewRestaurant(key);
 		
 		return new ResponseEntity<Restaurant>(viewedRestaurant,HttpStatus.CREATED);
 	}

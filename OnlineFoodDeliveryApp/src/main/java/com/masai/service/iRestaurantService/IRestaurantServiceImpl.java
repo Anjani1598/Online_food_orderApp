@@ -63,7 +63,7 @@ public class IRestaurantServiceImpl implements IRestaurantService{
 	}
 
 	@Override
-	public Restaurant removeRestaurant(Integer id, String key) throws RestaurantException {
+	public String removeRestaurant(Integer id, String key) throws RestaurantException {
 		
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
@@ -74,7 +74,7 @@ public class IRestaurantServiceImpl implements IRestaurantService{
 			Restaurant res = opt.get();
 			if(res.getRestaurantId()==loggedInUser.getUserId()) {
 				restaurantDao.delete(res);
-				return res;
+				return "Account removed Successfully";
 			}else {
 				throw new RestaurantException("Invalid Restaurant Details");
 			}
@@ -86,7 +86,7 @@ public class IRestaurantServiceImpl implements IRestaurantService{
 	}
 
 	@Override
-	public Restaurant viewRestaurant(Restaurant res, String key) throws RestaurantException {
+	public Restaurant viewRestaurant(String key) throws RestaurantException {
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 

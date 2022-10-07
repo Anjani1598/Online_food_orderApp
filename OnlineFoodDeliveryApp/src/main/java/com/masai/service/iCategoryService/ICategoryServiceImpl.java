@@ -1,5 +1,7 @@
 package com.masai.service.iCategoryService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +52,7 @@ public class ICategoryServiceImpl implements ICategoryService {
 			}
 			
 			opt.get().getCategories().add(cat);
-			cat.getRestaurants().add(opt.get());
+			cat.setRestaurants(opt.get());
 			
 			return categoryDao.save(cat);
 			
@@ -60,27 +62,114 @@ public class ICategoryServiceImpl implements ICategoryService {
 	}
 
 	@Override
-	public Category updateCategory(Category cat, String key) {
+	public Category updateCategory(Integer catId,String catName, String key) throws RestaurantException {
+		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);	
+		
+		if(loggedInUser==null) {
+			throw new RestaurantException("Please provide valid key");
+			
+		}
+		
+		Optional<Restaurant> opt = restaurantDao.findById(loggedInUser.getUserId());
+		
+		
+		if(opt.isPresent()) {
+			
+			Restaurant res = opt.get();
+			
+			Category cat = categoryDao.findById(catId).get();
+			
+			if(res.getCategories().contains(cat)) {
+				
+				
+				cat.setCategoryName(catName);
+				
+				return categoryDao.save(cat);
+				
+				
+			}
+			
+			throw new RestaurantException("Invalid Catgory Details");
+
+			
+			
+			
+			
+			
+			
+		}
+		
+		throw new RestaurantException("Invalid Restaurant Details");
+	}
+
+	@Override
+	public String removeCategory(Integer resId,Integer catId, String key)throws RestaurantException {
+		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);	
+		
+		if(loggedInUser==null) {
+			throw new RestaurantException("Please provide valid key");
+			
+		}
+		if(loggedInUser.getUserId()==resId) {
+			Restaurant res = restaurantDao.findById(resId).get();
+			Category cat = categoryDao.findById(catId).get();
+			if(res!=null) {
+				if(cat!=null) {
+					
+					res.getCategories().remove(cat);
+					cat.setRestaurants(null);
+					
+					categoryDao.delete(cat);
+					return "Category Removed Successfully";
+
+					
+				}
+				throw new RestaurantException("Invalid Category Details");
+
+			}
+			throw new RestaurantException("Invalid Restaurant Details");
+
+			
+			
+		}
+		
+		throw new RestaurantException("Invalid Restaurant Details");
+	}
+
+	@Override
+	public Category viewCategory(Category cat, String key)throws RestaurantException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Category removeCategory(Category cat, String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public List<String> viewAllCategory(Integer id, String key)throws RestaurantException {
+		
+		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);	
+		
+		List<String> categories = new ArrayList<>();
 
-	@Override
-	public Category viewCategory(Category cat, String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Category viewAllCategory(Category cat, String key) {
-		// TODO Auto-generated method stub
-		return null;
+		if(loggedInUser==null) {
+			throw new RestaurantException("Please provide valid key");
+			
+		}
+		
+		Optional<Restaurant> opt = restaurantDao.findById(loggedInUser.getUserId());
+		
+		if(opt.isPresent()) {
+			
+			for(Category cats : opt.get().getCategories()) {
+				categories.add(cats.getCategoryName());
+			}
+			
+			return categories;
+			
+			
+			
+			
+		}
+		
+		throw new RestaurantException("Invalid Restaurant Details");
 	}
 
 }
