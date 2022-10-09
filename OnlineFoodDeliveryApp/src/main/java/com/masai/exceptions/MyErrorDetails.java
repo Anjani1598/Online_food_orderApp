@@ -8,6 +8,7 @@ public class MyErrorDetails {
 	private LocalDateTime timeStamp;
 	private String message;
 	private String details;
+	private String tokens;
 	
 	public MyErrorDetails() {
 		// TODO Auto-generated constructor stub
