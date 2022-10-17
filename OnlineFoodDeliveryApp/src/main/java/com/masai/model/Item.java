@@ -1,22 +1,19 @@
 package com.masai.model;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+
+
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -35,12 +32,12 @@ public class Item {
 //	@JsonIgnore
 	private Category category;
 	
-	@ManyToMany(cascade = CascadeType.PERSIST)
-	@JsonIgnore
-	private Set<FoodCart> carts = new HashSet<>();
+//	@ManyToMany(cascade = CascadeType.ALL)
+//	@JsonIgnore
+//	private Set<FoodCart> cart = new HashSet<>();
 	
-
-	private Integer quantity;
+	@OneToMany
+	private List<CustomerItem> customerItems = new ArrayList<>(); 
 	private double cost;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -49,7 +46,7 @@ public class Item {
 
 	@Override
 	public String toString() {
-		return "Item [itemId=" + itemId + ", itemName=" + itemName + ", quantity=" + quantity + ", cost=" + cost + "]";
+		return "Item [itemId=" + itemId + ", itemName=" + itemName +", cost=" + cost + "]";
 	}
 
 	@Override
@@ -63,12 +60,12 @@ public class Item {
 		Item other = (Item) obj;
 		return Double.doubleToLongBits(cost) == Double.doubleToLongBits(other.cost)
 				&& Objects.equals(itemId, other.itemId) && Objects.equals(itemName, other.itemName)
-				&& Objects.equals(quantity, other.quantity);
+				;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cost, itemId, itemName, quantity);
+		return Objects.hash(cost, itemId, itemName);
 	}
 	
 	

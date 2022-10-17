@@ -11,6 +11,7 @@ import com.masai.exceptions.RestaurantException;
 import com.masai.model.Bill;
 import com.masai.model.CurrentUserSession;
 import com.masai.model.Customer;
+import com.masai.model.CustomerItem;
 import com.masai.model.Item;
 import com.masai.model.OrderDetails;
 import com.masai.model.Restaurant;
@@ -48,12 +49,12 @@ public class IBillServiceImpl implements IBillService {
 		
 		bill.setBillDate(LocalDateTime.now());
 
-		bill.setTotalItem(opt.get().getCart().getItemList().size());
+		bill.setTotalItem(opt.get().getCart().getCustomerItems().size());
 		Restaurant res = null;
 		Double totalCost = (double) 0;
-		for(Item items : opt.get().getCart().getItemList()) {
-			res = items.getRestaurant();
-			totalCost += items.getCost()*items.getQuantity();
+		for(CustomerItem items : opt.get().getCart().getCustomerItems()) {
+			res = items.getItem().getRestaurant();
+			totalCost += items.getItem().getCost()*items.getQuantity();
 		}
 		bill.setTotalCost(totalCost);
 		bill.setCart(opt.get().getCart());
@@ -67,7 +68,7 @@ public class IBillServiceImpl implements IBillService {
 		order.setBill(bill);
 		bill.setOrder(order);
 		res.getOrders().add(order);
-		restaurantDao.save(res);
+//		restaurantDao.save(res);
 		
 		return billDao.save(bill);
 	

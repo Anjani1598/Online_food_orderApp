@@ -40,7 +40,7 @@ public class LoginServiceImpl implements LoginService{
 		
 		if(dto.getRole().equals("admin")) {
 			Restaurant existingCustomer = aDao.findByMobileNumber(dto.getMobileNumber());
-			System.out.println("hai");
+			System.out.println(existingCustomer);
 			if(existingCustomer == null) {
 				
 				throw new LoginException("Please Enter a valid mobile number");
@@ -83,6 +83,7 @@ public class LoginServiceImpl implements LoginService{
 			
 			Customer existingCustomer= cDao.findByMobileNumber(dto.getMobileNumber());
 			
+			System.out.println(existingCustomer);
 			if(existingCustomer == null) {
 				
 				throw new LoginException("Please Enter a valid mobile number");
@@ -96,9 +97,6 @@ public class LoginServiceImpl implements LoginService{
 			Optional<CurrentUserSession> validCustomerSessionOpt =  sDao.findById(existingCustomer.getCustomerId());
 			
 			
-			
-			
-			
 			if(validCustomerSessionOpt.isPresent()) {
 				
 				throw new LoginException("User already Logged In with this number");
@@ -108,9 +106,7 @@ public class LoginServiceImpl implements LoginService{
 			if(existingCustomer.getPassword().equals(dto.getPassword())) {
 				
 				String key= RandomString.make(6);
-				
-				
-				
+			
 				CurrentUserSession currentUserSession = new CurrentUserSession(existingCustomer.getCustomerId(),key,LocalDateTime.now());
 				
 				sDao.save(currentUserSession);

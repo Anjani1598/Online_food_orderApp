@@ -35,9 +35,9 @@ public class Category {
 	@JsonIgnore
 	private Set<Item> items = new HashSet<>();
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JsonIgnore
-	private Set<Restaurant> restaurants = new HashSet<>();
+	private Restaurant restaurants;
 
 	@Override
 	public boolean equals(Object obj) {

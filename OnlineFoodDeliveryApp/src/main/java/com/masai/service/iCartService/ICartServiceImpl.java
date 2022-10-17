@@ -11,11 +11,14 @@ import com.masai.exceptions.ItemException;
 import com.masai.exceptions.RestaurantException;
 import com.masai.model.CurrentUserSession;
 import com.masai.model.Customer;
+import com.masai.model.CustomerItem;
 import com.masai.model.FoodCart;
 import com.masai.model.Item;
 import com.masai.model.Restaurant;
 import com.masai.repositories.CustomerDao;
+import com.masai.repositories.CustomerItemDao;
 import com.masai.repositories.FoodCartDao;
+import com.masai.repositories.ItemDao;
 import com.masai.repositories.RestaurantDao;
 import com.masai.repositories.SessionDao;
 
@@ -34,10 +37,16 @@ public class ICartServiceImpl implements ICartService {
 	@Autowired
 	private RestaurantDao restaurantDao;
 	
+	@Autowired
+	private ItemDao itemDao;
+	
+	@Autowired
+	private CustomerItemDao customerItemDao;
+	
 	
 
 	@Override
-	public FoodCart addItemToCart(Item item,String key) throws FoodCartException, ItemException, CustomerException {
+	public FoodCart addItemToCart(Integer itemId,String key) throws FoodCartException, ItemException, CustomerException {
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		
@@ -45,10 +54,10 @@ public class ICartServiceImpl implements ICartService {
 			throw new CustomerException("Please provide valid key");
 		}
 		
-		
+		Item item = itemDao.findById(itemId).get();
 		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
 		Optional<Restaurant> opt_res = restaurantDao.findById(item.getRestaurant().getRestaurantId());
-
+		
 		if(opt.get().getCart() == null) {
 			
 			FoodCart cart = new FoodCart();
@@ -65,9 +74,12 @@ public class ICartServiceImpl implements ICartService {
 				
 				System.out.println(i);
 				
-				if(i.getItemId()==item.getItemId()) {
-					cart.getItemList().add(i);
-					i.getCarts().add(cart);
+				if(i.getItemId()==itemId) {
+					CustomerItem customerItem = new CustomerItem();
+					customerItem.setCart(cart);
+					customerItem.setItem(i);
+					customerItem.setQuantity(1);
+					cart.getCustomerItems().add(customerItem);
 					return foodCartDao.save(cart);
 					
 				}
@@ -84,11 +96,23 @@ public class ICartServiceImpl implements ICartService {
 			for(Item i : res.getItems()) {
 				
 				
-				System.out.println(i);
+				for(CustomerItem j : cart.getCustomerItems()) {
+					if(j.getItem().getItemId()==i.getItemId()) {
+						
+						throw new FoodCartException("Item added already");
+						
+					}
+				}
 				
-				if(i.getItemId()==item.getItemId()) {
-					cart.getItemList().add(i);
-					i.getCarts().add(cart);
+				
+				
+				if(i.getItemId()==itemId) {
+					
+					CustomerItem customerItem = new CustomerItem();
+					customerItem.setCart(cart);
+					customerItem.setItem(i);
+					customerItem.setQuantity(1);
+					cart.getCustomerItems().add(customerItem);
 					return foodCartDao.save(cart);
 					
 				}
@@ -101,7 +125,7 @@ public class ICartServiceImpl implements ICartService {
 	}
 
 	@Override
-	public FoodCart increaseQuantity(Item item, Integer quantity,String key)throws FoodCartException, ItemException, CustomerException {
+	public FoodCart increaseQuantity(Integer customerItemId,String key)throws FoodCartException, ItemException, CustomerException {
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		
@@ -110,7 +134,7 @@ public class ICartServiceImpl implements ICartService {
 		}
 		
 		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
-		
+		CustomerItem customerItem = customerItemDao.findById(customerItemId).get();
 		
 		if(opt.get().getCart() == null) {
 			
@@ -119,27 +143,16 @@ public class ICartServiceImpl implements ICartService {
 		}else {
 			
 			FoodCart cart = opt.get().getCart();
-			
-			if(cart.getItemList().contains(item)) {
+			System.out.println("hai");
+			if(cart.getCustomerItems().contains(customerItem)) {
+				System.out.println("hai");
+
+				customerItem.setQuantity(customerItem.getQuantity()+1);
 				
-				for(Item cart_item : cart.getItemList()) {
-					
-					if(cart_item == item) {
-						
-						if(cart_item.getQuantity()>0) {
-							cart_item.setQuantity(cart_item.getQuantity()+1);
-							cart_item.getCarts().add(cart);
-							return foodCartDao.save(cart);
-						}else if(cart_item.getQuantity()==0) {
-							cart.getItemList().add(cart_item);
-							cart_item.getCarts().add(cart);
-							return foodCartDao.save(cart);
-						}
-						
-						
-					}
-					
-				}
+				customerItemDao.save(customerItem);
+				return cart;
+				
+				
 				
 			}
 			
@@ -156,16 +169,16 @@ public class ICartServiceImpl implements ICartService {
 
 
 	@Override
-	public FoodCart reduceQuantity(Item item, Integer quantity,String key)throws FoodCartException, ItemException, CustomerException {
+	public FoodCart reduceQuantity(Integer customerItemId, Integer quantity,String key)throws FoodCartException, ItemException, CustomerException {
 		
-		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
+CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		
 		if(loggedInUser==null) {
 			throw new CustomerException("Please provide valid key");
 		}
 		
 		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
-		
+		CustomerItem customerItem = customerItemDao.findById(customerItemId).get();
 		
 		if(opt.get().getCart() == null) {
 			
@@ -174,29 +187,14 @@ public class ICartServiceImpl implements ICartService {
 		}else {
 			
 			FoodCart cart = opt.get().getCart();
-			
-			if(cart.getItemList().contains(item)) {
+			System.out.println("hai");
+			if(cart.getCustomerItems().contains(customerItem)) {
 				
-				for(Item cart_item : cart.getItemList()) {
-					
-					if(cart_item == item) {
-						
-						if(cart_item.getQuantity()>1) {
-							
-							cart_item.setQuantity(cart_item.getQuantity()-1);
-							cart_item.getCarts().add(cart);
-							return foodCartDao.save(cart);
-							
-						}else if(cart_item.getQuantity()==1) {
-							
-							cart.getItemList().remove(cart_item);
-							cart_item.getCarts().add(cart);
-							return foodCartDao.save(cart);
-						}
-					
-					}
-
-				}
+				customerItem.setQuantity(customerItem.getQuantity()-1);
+				customerItemDao.save(customerItem);
+				return cart;
+				
+				
 				
 			}
 			
@@ -206,22 +204,25 @@ public class ICartServiceImpl implements ICartService {
 		}
 
 		
+		
 	}
 
 
 
 	@Override
-	public FoodCart removeItem(Item item,String key) throws FoodCartException, ItemException {
+	public FoodCart  removeItem(Integer customerItemId,String key) throws FoodCartException, ItemException {
 
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		
-//		if(loggedInUser==null) {
-//			throw new CustomerException("Please provide valid key");
-//		}
+		if(loggedInUser==null) {
+			throw new FoodCartException("Please provide valid key");
+		}
 		
 		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
-		
+		CustomerItem customerItem = customerItemDao.findById(customerItemId).get();
+		System.out.println("Hi");
+
 		if(opt.get().getCart() == null) {
 			
 			throw new FoodCartException("Your Cart is Empty");
@@ -229,11 +230,13 @@ public class ICartServiceImpl implements ICartService {
 		}else {
 			
 			FoodCart cart = opt.get().getCart();
+			System.out.println("Hi");
 			
-			if(cart.getItemList().contains(item)) {
+			if(cart.getCustomerItems().contains(customerItem)) {
 				
-				cart.getItemList().remove(item);
-				item.getCarts().remove(cart);
+				cart.getCustomerItems().remove(customerItem);
+				customerItemDao.delete(customerItem);
+
 				
 				return foodCartDao.save(cart);
 				
@@ -265,11 +268,14 @@ public class ICartServiceImpl implements ICartService {
 			
 			FoodCart cart = opt.get().getCart();
 			
-			for(Item item : cart.getItemList()) {
-				item.getCarts().remove(cart);
+			cart.getCustomerItems().clear();
+			for(CustomerItem item : cart.getCustomerItems()) {
+				
+				customerItemDao.delete(item);
+				
 			}
 			
-			cart.getItemList().clear();
+			
 			
 			return foodCartDao.save(cart);
 			

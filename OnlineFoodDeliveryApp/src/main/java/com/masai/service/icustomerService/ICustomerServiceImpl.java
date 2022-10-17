@@ -66,13 +66,15 @@ public class ICustomerServiceImpl implements ICustomerService {
 	}
 
 	@Override
-	public Customer removeCustomer(Customer customer, String key) throws CustomerException {
+	public String removeCustomer(Integer customerId, String key) throws CustomerException {
 		
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
-		if(customer.getCustomerId()==loggedInUser.getUserId()) {
-			customerDao.delete(customer);
-			return customer;
+		if(customerId==loggedInUser.getUserId()) {
+			
+			Customer cus = customerDao.findById(customerId).get();
+			customerDao.delete(cus);
+			return "Customer Removed Successfully";
 		}else {
 			throw new CustomerException("Invalid Customer Details");
 		}
@@ -80,7 +82,7 @@ public class ICustomerServiceImpl implements ICustomerService {
 	}
 
 	@Override
-	public Customer viewCustomer(Customer customer,String key) throws CustomerException {
+	public Customer viewCustomer(String key) throws CustomerException {
 		
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);

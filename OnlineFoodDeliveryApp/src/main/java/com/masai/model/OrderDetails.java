@@ -40,7 +40,11 @@ public class OrderDetails {
 	
 	@Override
 	public String toString() {
-		return "OrderDetails [orderId=" + orderId + ", orderDate=" + orderDate + "orderStatus="
+//<<<<<<< HEAD
+//		return "OrderDetails [orderId=" + orderId + ", orderDate=" + orderDate + "orderStatus="
+//=======
+		return "OrderDetails [orderId=" + orderId + ", orderDate=" + orderDate +  ", orderStatus="
+//>>>>>>> 77843e2970ffc4a507357f6a45688b64d7408bfc
 				+ orderStatus + "]";
 	}
 	
