@@ -1,5 +1,6 @@
 package com.masai.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +22,7 @@ public class CustomerItem {
 	@ManyToOne
 	private Item item;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private FoodCart cart;
 	
 	

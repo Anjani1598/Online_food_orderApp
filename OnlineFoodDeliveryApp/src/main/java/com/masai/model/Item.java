@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -27,16 +28,18 @@ public class Item {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer itemId;
 	private String itemName;
+	private String itemThumbnail;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-//	@JsonIgnore
+	@JsonIgnore
 	private Category category;
 	
 //	@ManyToMany(cascade = CascadeType.ALL)
 //	@JsonIgnore
 //	private Set<FoodCart> cart = new HashSet<>();
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<CustomerItem> customerItems = new ArrayList<>(); 
 	private double cost;
 	

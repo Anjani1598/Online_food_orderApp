@@ -26,5 +26,15 @@ public interface IRestaurantService {
 	
 	public List<Restaurant> viewRestaurantByItemNAme(String name) throws RestaurantException;
 
+	
+	public List<Restaurant> getAllRestaurants()throws RestaurantException;
+	
+	
+	public List<Restaurant> getAllRestaurantsOrderByRating()throws RestaurantException;
+	
+	public List<Restaurant> getAllRestaurantsOrderByDeliveryTime()throws RestaurantException;
+	
+	public List<Restaurant> getAllRestaurantsOrderByDiscount()throws RestaurantException;
 
 }
+
