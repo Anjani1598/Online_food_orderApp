@@ -31,7 +31,7 @@ public class ICategoryServiceImpl implements ICategoryService {
 	
 	
 	@Override
-	public Category addCategory(Category cat, String key) throws RestaurantException {
+	public Category addCategory(String categoryName, String key) throws RestaurantException {
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);	
 		
@@ -45,12 +45,13 @@ public class ICategoryServiceImpl implements ICategoryService {
 		if(opt.isPresent()) {
 			
 			for(Category category : opt.get().getCategories()) {
-				if(category.getCategoryName().equals(cat.getCategoryName())) {
+				if(category.getCategoryName().equals(categoryName)) {
 					throw new RestaurantException("Category added already");
 					
 				}
 			}
-			
+			Category cat = new Category();
+			cat.setCategoryName(categoryName);
 			opt.get().getCategories().add(cat);
 			cat.setRestaurants(opt.get());
 			
@@ -143,30 +144,30 @@ public class ICategoryServiceImpl implements ICategoryService {
 	}
 
 	@Override
-	public List<String> viewAllCategory(Integer id, String key)throws RestaurantException {
+	public List<Category> viewAllCategory(Integer id, String key)throws RestaurantException {
 		
-		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);	
-		
-		List<String> categories = new ArrayList<>();
+		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
+		System.out.println(key);
+		System.out.println(loggedInUser);
 
 		if(loggedInUser==null) {
 			throw new RestaurantException("Please provide valid key");
 			
 		}
 		
-		Optional<Restaurant> opt = restaurantDao.findById(loggedInUser.getUserId());
+		Optional<Restaurant> opt = restaurantDao.findById(id);
 		
 		if(opt.isPresent()) {
 			
-			for(Category cats : opt.get().getCategories()) {
-				categories.add(cats.getCategoryName());
+			
+			List<Category> categories = categoryDao.findByRestaurants(opt.get());
+			
+			if(categories.size()>0) {
+				return categories;
 			}
 			
-			return categories;
-			
-			
-			
-			
+			throw new RestaurantException("No Categories Listed");
+
 		}
 		
 		throw new RestaurantException("Invalid Restaurant Details");

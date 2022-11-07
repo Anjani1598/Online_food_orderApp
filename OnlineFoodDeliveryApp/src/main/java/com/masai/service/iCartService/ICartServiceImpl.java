@@ -1,5 +1,6 @@
 package com.masai.service.iCartService;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import com.masai.exceptions.CustomerException;
 import com.masai.exceptions.FoodCartException;
 import com.masai.exceptions.ItemException;
 import com.masai.exceptions.RestaurantException;
+import com.masai.model.Category;
 import com.masai.model.CurrentUserSession;
 import com.masai.model.Customer;
 import com.masai.model.CustomerItem;
@@ -42,6 +44,8 @@ public class ICartServiceImpl implements ICartService {
 	
 	@Autowired
 	private CustomerItemDao customerItemDao;
+	
+
 	
 	
 
@@ -79,6 +83,7 @@ public class ICartServiceImpl implements ICartService {
 					customerItem.setCart(cart);
 					customerItem.setItem(i);
 					customerItem.setQuantity(1);
+					i.getCustomerItems().add(customerItem);
 					cart.getCustomerItems().add(customerItem);
 					return foodCartDao.save(cart);
 					
@@ -95,14 +100,6 @@ public class ICartServiceImpl implements ICartService {
 			
 			for(Item i : res.getItems()) {
 				
-				
-				for(CustomerItem j : cart.getCustomerItems()) {
-					if(j.getItem().getItemId()==i.getItemId()) {
-						
-						throw new FoodCartException("Item added already");
-						
-					}
-				}
 				
 				
 				
@@ -234,7 +231,13 @@ CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 			
 			if(cart.getCustomerItems().contains(customerItem)) {
 				
+				Item item = customerItem.getItem();
+				
+				
 				cart.getCustomerItems().remove(customerItem);
+				customerItem.setCart(null);
+				customerItem.setItem(null);
+				item.getCustomerItems().remove(customerItem);
 				customerItemDao.delete(customerItem);
 
 				
@@ -248,9 +251,14 @@ CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		
 		
 	}
+	@Override
+	public FoodCart removeItemAuthorized(Integer itemId) throws FoodCartException, ItemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
-	public FoodCart clearCart(String key) throws FoodCartException, CustomerException {
+	public FoodCart clearCart(String key) throws FoodCartException, CustomerException, ItemException {
 		
 		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		
@@ -268,12 +276,17 @@ CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 			
 			FoodCart cart = opt.get().getCart();
 			
-			cart.getCustomerItems().clear();
-			for(CustomerItem item : cart.getCustomerItems()) {
-				
-				customerItemDao.delete(item);
+			
+			System.out.println(cart.getCustomerItems());
+			
+			for(CustomerItem customerItem : cart.getCustomerItems()) {
+					
+				removeItem(customerItem.getCustomerItemId(), key);
 				
 			}
+
+			
+			
 			
 			
 			
@@ -282,5 +295,46 @@ CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
 		}
 		
 	}
+
+	@Override
+	public List<CustomerItem> getAllCartItems(String key) throws FoodCartException, CustomerException {
+		CurrentUserSession loggedInUser = sessionDao.findByUuid(key);
+		
+
+		if(loggedInUser==null) {
+			throw new FoodCartException("Please provide valid key");
+			
+		}
+		
+		Optional<Customer> opt = customerDao.findById(loggedInUser.getUserId());
+		
+		if(opt.isPresent()) {
+			FoodCart cart = opt.get().getCart();
+			
+			List<CustomerItem> cartItems = customerItemDao.findByCart(cart);
+			
+			if(cartItems.size()>0) {
+				
+				return customerItemDao.findByCart(cart);
+				
+			}else {
+				throw new FoodCartException("Your cart is empty");
+			}
+			
+		}
+		
+		throw new FoodCartException("invali details");
+		
+		
+			
+			
+			
+
+		
+		
+
+	}
+
+	
 
 }

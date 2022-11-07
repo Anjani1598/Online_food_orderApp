@@ -35,7 +35,7 @@ public class LoginServiceImpl implements LoginService{
 	
 	
 	@Override
-	public String logIntoAccount(LoginDTO dto)throws LoginException{
+	public CurrentUserSession logIntoAccount(LoginDTO dto)throws LoginException{
 		System.out.println(dto.getRole()=="admin");
 		
 		if(dto.getRole().equals("admin")) {
@@ -73,7 +73,7 @@ public class LoginServiceImpl implements LoginService{
 				
 				sDao.save(currentUserSession);
 
-				return currentUserSession.toString();
+				return currentUserSession;
 			}
 			else
 				throw new LoginException("Please Enter a valid password");
@@ -82,7 +82,7 @@ public class LoginServiceImpl implements LoginService{
 		}else {
 			
 			Customer existingCustomer= cDao.findByMobileNumber(dto.getMobileNumber());
-			
+			System.out.println(dto);
 			System.out.println(existingCustomer);
 			if(existingCustomer == null) {
 				
@@ -111,7 +111,7 @@ public class LoginServiceImpl implements LoginService{
 				
 				sDao.save(currentUserSession);
 
-				return currentUserSession.toString();
+				return currentUserSession;
 			}
 			else
 				throw new LoginException("Please Enter a valid password");

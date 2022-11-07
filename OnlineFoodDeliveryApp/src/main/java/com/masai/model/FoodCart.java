@@ -51,7 +51,7 @@ public class FoodCart {
 
 	@Override
 	public String toString() {
-		return "FoodCart [cartId=" + cartId + ", customer=" + customer + "]";
+		return "FoodCart [cartId=" + cartId +"]";
 	}
 
 	@Override

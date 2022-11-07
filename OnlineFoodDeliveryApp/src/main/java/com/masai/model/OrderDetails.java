@@ -23,7 +23,6 @@ public class OrderDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@JsonIgnore
 	private Integer orderId;
 	private LocalDateTime orderDate;
 	
@@ -36,6 +35,9 @@ public class OrderDetails {
 	private Bill bill;
 	
 	private String orderStatus;
+	
+	private boolean orderState = false;
+	private boolean hide = false;
 	
 	
 	@Override

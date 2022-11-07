@@ -2,6 +2,7 @@ package com.masai.model;
 
 import java.util.ArrayList;
 
+
 import java.util.HashSet;
 
 import java.util.List;
@@ -30,6 +31,10 @@ public class Restaurant {
 	private Integer restaurantId;
 	private String restaurantName;
 	
+	private Float rating;
+	private Float deliveryTime;
+	private Integer discount;
+	
 	
 	@ElementCollection
 	@Embedded
@@ -53,7 +58,7 @@ public class Restaurant {
 
 	
 	
-	
+	private String restaurantThumbnail;
 	private String managerName;
 	private String mobileNumber;
 	private String password;

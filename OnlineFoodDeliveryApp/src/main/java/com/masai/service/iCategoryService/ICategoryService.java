@@ -7,7 +7,7 @@ import com.masai.model.Category;
 
 public interface ICategoryService {
 	
-	public Category addCategory(Category cat,String key)throws RestaurantException;
+	public Category addCategory(String categoryName,String key)throws RestaurantException;
 	
 	
 	public Category updateCategory(Integer catId, String catName, String key)throws RestaurantException;
@@ -19,7 +19,7 @@ public interface ICategoryService {
 	public Category viewCategory(Category cat,String key)throws RestaurantException;
 
 	
-	public List<String> viewAllCategory(Integer id,String key)throws RestaurantException;
+	public List<Category> viewAllCategory(Integer id,String key)throws RestaurantException;
 
 
 }
