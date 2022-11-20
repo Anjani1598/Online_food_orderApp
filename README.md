@@ -23,12 +23,11 @@ This repository contains the backend of a food delivery app. An online food deli
     <img src="https://img.shields.io/badge/Rest_API-02303A?style=for-the-badge&logo=react-router&logoColor=white" alt="restAPI"/>
 </p>
 
-<h3 align="center"><a href="https://mohit-foodstore.netlify.app/"><strong>Want to see live preview »</strong></a></h3>
 
 <p align="center"> 
     <br />&#10023;
     <a href="#Demo">View Demo</a>   &#10023;  
-    <a href="https://github.com/m-sehrawat/Food-Store/issues">Report Bug</a>    &#10023;
+    <a href="https://github.com/Anjani1598/Online_food_orderApp/issues">Report Bug</a>    &#10023;
     <a href="#Getting-Started">Getting Started</a> &#10023; <a href="#Install">Installing</a> &#10023;    
     <a href="#Contact">Author</a> &#10023;
   </p>
