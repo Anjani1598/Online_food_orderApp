@@ -97,6 +97,31 @@ This repository contains the backend of a food delivery app. An online food deli
 This project was built using HTML5, CSS3, JavaScript, Rest API. It is an e-commerce food web application and for running on your local environment you should follow these guidelines.
 
 
+## Installation and Run
+-  You can clone this repo and start the serve on localhost
+-   Before running the API server, we should update the database config inside the application.properties file.
+-   Update the port number, username and password as per your local database config.
+```
+   server.port=8880
+   spring.datasource.url=jdbc:mysql://localhost:3306/onlineFoodOrderdb
+   spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+   spring.datasource.username=**mysql username**
+   spring.datasource.password=**YourPassword**
+   spring.jpa.hibernate.ddl-auto=update
+```
+
+# Tech Stacks
+
+-   Java Core
+-   Spring Data JPA
+-   Spring Security
+-   Spring Boot
+-   Hibernate
+-   MySQL
+
+
+
+
 
 
 # Backend
