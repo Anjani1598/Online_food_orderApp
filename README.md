@@ -23,6 +23,11 @@ This repository contains the backend of a food delivery app. An online food deli
     <img src="https://img.shields.io/badge/Rest_API-02303A?style=for-the-badge&logo=react-router&logoColor=white" alt="restAPI"/>
 </p>
 
+## 🚀 ER Diagram
+
+
+![Online Food Order](https://user-images.githubusercontent.com/102143515/203010142-d786985d-1551-46b5-9dfd-cfe6defb21f9.png)
+
 
 <p align="center"> 
     <br />&#10023;
